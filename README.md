@@ -26,7 +26,7 @@ Follow these steps to install the bot regardless of your platform.
 
 If you're on Windows, follow these additional steps in order to get the bot's voice chat module to run:
 
-1. Edit the `version` variable by changing its value to "W" for "Windows".
+1. Edit the `version` variable in the `main.py` file by changing its value to "W" for "Windows".
 2. Go to the following [link](https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip) to install a Windows version of the FFmpeg software (please note that clicking on the link above will automatically start the download process). This software is needed in order to get the bot to talk in voice channels.
 3. Extract the zip file anywhere on your PC and copy the "ffmpeg.exe" file which can be found in the "bin" directory of the zip file you've just extracted.
 4. Paste the "ffmpeg.exe" file in the "bin" directory of the Discord bot folder.
@@ -41,7 +41,7 @@ If you're on Windows, follow these additional steps in order to get the bot's vo
 
 If you're on Linux (most likely because you'd like to host the bot on a server), follow these additional steps in order to get the bot's voice chat module to run:
 
-1. Edit the `version` variable by changing its value to "L" for "Linux".
+1. Edit the `version` variable in the `main.py` file by changing its value to "L" for "Linux".
 2. In a terminal window, run the following command: `sudo apt install ffmpeg`
 3. To start the bot, you can run the following command in a terminal window: `python main.py`
 
