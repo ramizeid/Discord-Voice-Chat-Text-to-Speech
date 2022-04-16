@@ -14,6 +14,7 @@ ibm_watson_url = 'YOUR_IBM_WATSON_URL'
 user_ids = []  # Whitelisted users - empty list = anyone can use the system
 channel_ids = []  # Whitelisted channels - empty list = system can be used in any channel
 message_count = 0
+version = "W"  # "W" for Windows and "L" for Linux
 
 watson_authenticator = IAMAuthenticator(ibm_watson_api_key)
 tts = TextToSpeechV1(authenticator=watson_authenticator)
@@ -149,10 +150,14 @@ async def play(ctx, *, mp3_file):
 
     if not voice_client.is_playing():
         # On Windows
-        # voice_client.play(discord.FFmpegPCMAudio(executable=ffmpeg_location, source=mp3_file_location))
-
-        # On Linux, make sure to have FFMPEG installed
-        voice_client.play(discord.FFmpegPCMAudio(source=mp3_file_location))
+        if version == "W":
+            voice_client.play(discord.FFmpegPCMAudio(executable=ffmpeg_location, source=mp3_file_location))
+        elif version == "L":
+            # On Linux, make sure to have FFMPEG installed
+            voice_client.play(discord.FFmpegPCMAudio(source=mp3_file_location))
+        else:
+            print("Invalid system version")
+            await ctx.send("Invalid system version")
 
 
 @client.event
