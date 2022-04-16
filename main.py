@@ -4,7 +4,10 @@ import os
 from ibm_watson import TextToSpeechV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
-client = commands.Bot(command_prefix='.')
+intents = discord.Intents.default()
+intents.message_content = True  # Needed in order to read the contents of messages being sent
+
+client = commands.Bot(command_prefix='.', intents=intents)
 TOKEN = 'YOUR_DISCORD_TOKEN'
 ibm_watson_api_key = 'YOUR_IBM_WATSON_API_KEY'
 ibm_watson_url = 'YOUR_IBM_WATSON_URL'
