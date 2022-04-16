@@ -12,6 +12,7 @@ client = commands.Bot(command_prefix=bot_prefix, intents=intents)
 DISCORD_TOKEN = 'YOUR_DISCORD_TOKEN'
 IBM_WATSON_API_KEY = 'YOUR_IBM_WATSON_API_KEY'
 IBM_WATSON_URL = 'YOUR_IBM_WATSON_URL'
+DISCORD_BOT_ID = 0  # Change this variable to your Discord bot's ID
 user_ids = []  # Whitelisted users - empty list = anyone can use the system
 channel_ids = []  # Whitelisted channels - empty list = system can be used in any channel
 message_count = 0
@@ -59,8 +60,9 @@ async def on_message(message):
     channel_id = message.channel.id
     message_content = message.content
     guild = message.guild
+    not_discord_bot = not (author_id == DISCORD_BOT_ID)
 
-    if ((author_id in user_ids) or (len(user_ids) == 0)) and ((channel_id in channel_ids) or (len(channel_ids) == 0)):
+    if not_discord_bot and ((author_id in user_ids) or (len(user_ids) == 0)) and ((channel_id in channel_ids) or (len(channel_ids) == 0)):
         detailed_vc = guild.me.voice
 
         if detailed_vc is not None:

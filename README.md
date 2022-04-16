@@ -13,13 +13,15 @@ Follow these steps to install the bot regardless of your platform.
 2. Install the Python dependencies by running the `pip install -r requirements.txt` command in a terminal window. This will install all of the needed Python libraries that are listed in the `requirements.txt` file.
 3. Edit the following variables in the `main.py` file:
     - `bot_prefix`: Changing this is optional, but you can change your Discord bot's prefix if you want
-    - `DISCORD_TOKEN`: Your Discord bot's token 
+    - `DISCORD_TOKEN`: Your Discord bot's token
         - Can be found on your [Discord developer portal](https://discord.com/developers/applications)
-    - `IBM_WATSON_API_KEY`: Your IBM Watson Text to Speech service API key 
+    - `IBM_WATSON_API_KEY`: Your IBM Watson Text to Speech service API key
         - Can be found on your [IBM Cloud dashboard](https://cloud.ibm.com/)
-    - `IBM_WATSON_URL`: Your IBM Watson Text to Speech service API URL 
+    - `IBM_WATSON_URL`: Your IBM Watson Text to Speech service API URL
         - Can be found on your [IBM Cloud dashboard](https://cloud.ibm.com/)
     - `IBM_WATSON_DEFAULT_ACCENT`: Changing this is optional, but you can change your Discord bot's default accent
+    - `DISCORD_BOT_ID`: Your Discord bot's ID
+        - Can be found on your [Discord developer portal](https://discord.com/developers/applications)
 4. If you'd like to limit the bot's usage to certain individuals or restrict its access to specific text channels, you can edit the `user_ids` and `channel_ids` variables accordingly.
 
 **Windows-specific**:
