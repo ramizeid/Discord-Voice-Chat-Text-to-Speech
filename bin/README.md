@@ -1,0 +1,1 @@
+## This is where your FFmpeg.exe file will be stored if you run the bot on Windows.

@@ -6,21 +6,22 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 intents = discord.Intents.default()
 intents.message_content = True  # Needed in order to read the contents of messages being sent
+bot_prefix = "."
 
-client = commands.Bot(command_prefix='.', intents=intents)
-TOKEN = 'YOUR_DISCORD_TOKEN'
-ibm_watson_api_key = 'YOUR_IBM_WATSON_API_KEY'
-ibm_watson_url = 'YOUR_IBM_WATSON_URL'
+client = commands.Bot(command_prefix=bot_prefix, intents=intents)
+DISCORD_TOKEN = 'YOUR_DISCORD_TOKEN'
+IBM_WATSON_API_KEY = 'YOUR_IBM_WATSON_API_KEY'
+IBM_WATSON_URL = 'YOUR_IBM_WATSON_URL'
 user_ids = []  # Whitelisted users - empty list = anyone can use the system
 channel_ids = []  # Whitelisted channels - empty list = system can be used in any channel
 message_count = 0
 version = "W"  # "W" for Windows and "L" for Linux
 
-watson_authenticator = IAMAuthenticator(ibm_watson_api_key)
+watson_authenticator = IAMAuthenticator(IBM_WATSON_API_KEY)
 tts = TextToSpeechV1(authenticator=watson_authenticator)
-tts.set_service_url(ibm_watson_url)
-ibm_default_watson_accent = 'en-US_MichaelV3Voice'
-ibm_watson_accent = ibm_default_watson_accent
+tts.set_service_url(IBM_WATSON_URL)
+IBM_WATSON_DEFAULT_ACCENT = 'en-US_MichaelV3Voice'
+ibm_watson_accent = IBM_WATSON_DEFAULT_ACCENT
 watson_accents_list = ['ar-MS_OmarVoice', 'zh-CN_LiNaVoice', 'zh-CN_WangWeiVoice', 'zh-CN_ZhangJingVoice', 'cs-CZ_AlenaVoice', 'nl-BE_AdeleVoice', 'nl-BE_BramVoice', 'nl-NL_EmmaVoice', 'nl-NL_LiamVoice', 'en-AU_CraigVoice', 'en-AU_MadisonVoice', 'en-AU_SteveVoice', 'en-GB_CharlotteV3Voice', 'en-GB_JamesV3Voice', 'en-GB_KateV3Voice', 'en-US_AllisonV3Voice', 'en-US_EmilyV3Voice', 'en-US_HenryV3Voice', 'en-US_KevinV3Voice', 'en-US_LisaV3Voice', 'en-US_MichaelV3Voice', 'en-US_OliviaV3Voice', 'fr-CA_LouiseV3Voice', 'fr-FR_NicolasV3Voice', 'fr-FR_ReneeV3Voice', 'de-DE_BirgitV3Voice', 'de-DE_DieterV3Voice', 'de-DE_ErikaV3Voice', 'it-IT_FrancescaV3Voice', 'ja-JP_EmiV3Voice', 'ko-KR_HyunjunVoice', 'ko-KR_SiWooVoice', 'ko-KR_YoungmiVoice', 'ko-KR_YunaVoice', 'pt-BR_IsabelaV3Voice', 'es-ES_EnriqueV3Voice', 'es-ES_LauraV3Voice', 'es-LA_SofiaV3Voice', 'es-US_SofiaV3Voice', 'sv-SE_IngridVoice']
 
 
@@ -29,6 +30,9 @@ watson_accents_list = ['ar-MS_OmarVoice', 'zh-CN_LiNaVoice', 'zh-CN_WangWeiVoice
 # ---------------------------------------
 @client.event
 async def on_ready():
+    """
+    Event that is triggered when the bot first starts - this initializes the system.
+    """
     global tts
 
     await client.change_presence(activity=discord.Game(name="TTS stuff"))
@@ -43,6 +47,9 @@ async def on_ready():
 
 @client.command()
 async def join(ctx, *, channel_id=None):
+    """
+    Command that allows the bot to join a voice channel (either by ID, or automatically joins the channel that the user is in).
+    """
     author_id = ctx.author.id
 
     if (author_id in user_ids) or (len(user_ids) == 0):
@@ -67,6 +74,10 @@ async def join(ctx, *, channel_id=None):
 
 @client.command()
 async def leave(ctx):
+    """
+    Command that allows the bot to leave the channel it is currently in. Calling this command will also reset the system 
+    (see the reset command for more information).
+    """
     author_id = ctx.author.id
 
     if (author_id in user_ids) or (len(user_ids) == 0):
@@ -83,6 +94,9 @@ async def leave(ctx):
 
 @client.command()
 async def accent(ctx, *, accent_input):
+    """
+    Command that allows the user to change the bot's accent.
+    """
     global ibm_watson_accent
     global watson_accents_list
     author_id = ctx.author.id
@@ -92,7 +106,7 @@ async def accent(ctx, *, accent_input):
             watson_accents_list[i] = template_accent.lower()
 
         if accent_input.lower() == "default":
-            ibm_watson_accent = ibm_default_watson_accent
+            ibm_watson_accent = IBM_WATSON_DEFAULT_ACCENT
             await ctx.send(f'Changed the bot\'s accent to "{accent_input}".')
         elif accent_input.lower() in watson_accents_list:
             print(ibm_watson_accent)
@@ -104,11 +118,14 @@ async def accent(ctx, *, accent_input):
 
 @client.command()
 async def accents(ctx):
+    """
+    Command that allows the user to get a list of available bot accents.
+    """
     author_id = ctx.author.id
     accents_list_string = "```\nList of accents: \n \n"
 
     if (author_id in user_ids) or (len(user_ids) == 0):
-        accents_list_string += f"- default ({ibm_default_watson_accent})\n"
+        accents_list_string += f"- default ({IBM_WATSON_DEFAULT_ACCENT})\n"
 
         for current_accent in watson_accents_list:
             accents_list_string += f"- {current_accent}\n"
@@ -119,12 +136,19 @@ async def accents(ctx):
 
 
 def is_connected(ctx):
+    """
+    Function that checks if the bot is connected to a voice channel.
+    """
     voice_client = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
     return voice_client and voice_client.is_connected()
 
 
 @client.command()
 async def reset(ctx):
+    """
+    Command that resets the system when called (deletes the generated MP3 files and changes the bot's accent to its 
+    default value).
+    """
     global message_count
     global ibm_watson_accent
     author_id = ctx.author.id
@@ -135,13 +159,16 @@ async def reset(ctx):
             os.remove(f'{folder_name}/{file}')
 
         message_count = 0
-        ibm_watson_accent = ibm_default_watson_accent
+        ibm_watson_accent = IBM_WATSON_DEFAULT_ACCENT
 
         await ctx.send("Successfully reset the system.")
 
 
 @client.command()
 async def play(ctx, *, mp3_file):
+    """
+    Command that translates text to MP3 files which are then played by the bot in the desired voice channel.
+    """
     guild = ctx.guild
     voice_client = discord.utils.get(client.voice_clients, guild=guild)
 
@@ -162,6 +189,10 @@ async def play(ctx, *, mp3_file):
 
 @client.event
 async def on_message(message):
+    """
+    Event that is triggered when a message is sent in a channel that the bot has access to. This triggers the "play" command
+    which then translates the message to an MP3 files and plays it in the desired voice channel.
+    """
     global message_count
     author_id = message.author.id
     channel_id = message.channel.id
@@ -186,4 +217,4 @@ async def on_message(message):
 
     await client.process_commands(message)
 
-client.run(TOKEN)
+client.run(DISCORD_TOKEN)
