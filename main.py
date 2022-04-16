@@ -220,11 +220,11 @@ async def play(ctx, *, mp3_file):
     mp3_file_location = mp3_file
 
     if not voice_client.is_playing():
-        # On Windows
         if version == "W":
+            # On Windows
             voice_client.play(discord.FFmpegPCMAudio(executable=ffmpeg_location, source=mp3_file_location))
         elif version == "L":
-            # On Linux, make sure to have FFMPEG installed
+            # On Linux
             voice_client.play(discord.FFmpegPCMAudio(source=mp3_file_location))
         else:
             print("Invalid system version")
