@@ -72,8 +72,7 @@ async def on_message(message):
                 audio_file.write(tts.synthesize(message_content, voice=ibm_watson_accent, accept='audio/mp3').get_result().content)
 
             ctx = await client.get_context(message)
-            cmd = client.get_command("play")
-            await cmd(ctx, mp3_file=mp3_file_location)
+            await play(ctx, mp3_file=mp3_file_location)
             print(f"[Message by {message.author}] {message_content}")
 
         message_count += 1
@@ -208,12 +207,11 @@ async def reset(ctx):
 
 
 # ---------------------------------------
-# Play Command
+# Play Helper Function
 # ---------------------------------------
-@client.command()
 async def play(ctx, *, mp3_file):
     """
-    Command that translates text to MP3 files which are then played by the bot in the desired voice channel.
+    Function that translates text to MP3 files which are then played by the bot in the desired voice channel.
     """
     guild = ctx.guild
     voice_client = discord.utils.get(client.voice_clients, guild=guild)
