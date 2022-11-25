@@ -25,6 +25,9 @@ IBM_WATSON_DEFAULT_ACCENT = 'en-US_MichaelV3Voice'
 ibm_watson_accent = IBM_WATSON_DEFAULT_ACCENT
 watson_accents_list = ['ar-MS_OmarVoice', 'zh-CN_LiNaVoice', 'zh-CN_WangWeiVoice', 'zh-CN_ZhangJingVoice', 'cs-CZ_AlenaVoice', 'nl-BE_AdeleVoice', 'nl-BE_BramVoice', 'nl-NL_EmmaVoice', 'nl-NL_LiamVoice', 'en-AU_CraigVoice', 'en-AU_MadisonVoice', 'en-AU_SteveVoice', 'en-GB_CharlotteV3Voice', 'en-GB_JamesV3Voice', 'en-GB_KateV3Voice', 'en-US_AllisonV3Voice', 'en-US_EmilyV3Voice', 'en-US_HenryV3Voice', 'en-US_KevinV3Voice', 'en-US_LisaV3Voice', 'en-US_MichaelV3Voice', 'en-US_OliviaV3Voice', 'fr-CA_LouiseV3Voice', 'fr-FR_NicolasV3Voice', 'fr-FR_ReneeV3Voice', 'de-DE_BirgitV3Voice', 'de-DE_DieterV3Voice', 'de-DE_ErikaV3Voice', 'it-IT_FrancescaV3Voice', 'ja-JP_EmiV3Voice', 'ko-KR_HyunjunVoice', 'ko-KR_SiWooVoice', 'ko-KR_YoungmiVoice', 'ko-KR_YunaVoice', 'pt-BR_IsabelaV3Voice', 'es-ES_EnriqueV3Voice', 'es-ES_LauraV3Voice', 'es-LA_SofiaV3Voice', 'es-US_SofiaV3Voice', 'sv-SE_IngridVoice']
 
+squeaky_voice_keyword = "squeak"
+deep_voice_keyword = "deep"
+
 
 # ---------------------------------------
 # Bot Initialization
@@ -61,12 +64,38 @@ async def on_message(message):
     message_content = message.content
     guild = message.guild
     not_discord_bot = not (author_id == DISCORD_BOT_ID)
+    squeaky_voice_keyword_start = f"<{squeaky_voice_keyword}>"
+    squeaky_voice_keyword_end = f"</{squeaky_voice_keyword}>"
+    deep_voice_keyword_start = f"<{deep_voice_keyword}>"
+    deep_voice_keyword_end = f"</{deep_voice_keyword}>"
 
     if not_discord_bot and ((author_id in user_ids) or (len(user_ids) == 0)) and ((channel_id in channel_ids) or (len(channel_ids) == 0)):
         detailed_vc = guild.me.voice
 
         if detailed_vc is not None:
             mp3_file_location = f"mp3_messages/{message_count}.mp3"
+
+            if message_content.count(squeaky_voice_keyword_start) == 1 and message_content.count(squeaky_voice_keyword_end) == 1:
+                squeaky_message_start = message_content.find(squeaky_voice_keyword_start) + len(squeaky_voice_keyword_start)
+                squeaky_message_end = message_content.find(squeaky_voice_keyword_end)
+                squeaky_message_content = message_content[squeaky_message_start:squeaky_message_end].strip()
+                squeaky_message_content_original = squeaky_message_content
+                squeaky_message_content = f'<prosody pitch="x-high">{squeaky_message_content}</prosody>'
+
+                message_content = message_content.replace(squeaky_voice_keyword_start, " ")
+                message_content = message_content.replace(squeaky_voice_keyword_end, " ")
+                message_content = message_content.replace(squeaky_message_content_original, squeaky_message_content)
+
+            if message_content.count(deep_voice_keyword_start) == 1 and message_content.count(deep_voice_keyword_end) == 1:
+                deep_message_start = message_content.find(deep_voice_keyword_start) + len(deep_voice_keyword_start)
+                deep_message_end = message_content.find(deep_voice_keyword_end)
+                deep_message_content = message_content[deep_message_start:deep_message_end].strip()
+                deep_message_content_original = deep_message_content
+                deep_message_content = f'<prosody pitch="x-low">{deep_message_content}</prosody>'
+
+                message_content = message_content.replace(deep_voice_keyword_start, " ")
+                message_content = message_content.replace(deep_voice_keyword_end, " ")
+                message_content = message_content.replace(deep_message_content_original, deep_message_content)
 
             with open(mp3_file_location, 'wb') as audio_file:
                 audio_file.write(tts.synthesize(message_content, voice=ibm_watson_accent, accept='audio/mp3').get_result().content)
@@ -142,19 +171,19 @@ async def accent(ctx, *, accent_input):
     Command that allows the user to change the bot's accent.
     """
     global ibm_watson_accent
-    global watson_accents_list
+    watson_accents_list_copy = watson_accents_list.copy()
     author_id = ctx.author.id
 
     if (author_id in user_ids) or (len(user_ids) == 0):
-        for i, template_accent in enumerate(watson_accents_list):
-            watson_accents_list[i] = template_accent.lower()
+        for i, template_accent in enumerate(watson_accents_list_copy):
+            watson_accents_list_copy[i] = template_accent.lower()
 
         if accent_input.lower() == "default":
             ibm_watson_accent = IBM_WATSON_DEFAULT_ACCENT
             await ctx.send(f'Changed the bot\'s accent to "{accent_input}".')
-        elif accent_input.lower() in watson_accents_list:
-            print(ibm_watson_accent)
-            ibm_watson_accent = accent_input
+        elif accent_input.lower() in watson_accents_list_copy:
+            accent_index = watson_accents_list_copy.index(accent_input.lower())
+            ibm_watson_accent = watson_accents_list[accent_index]
             await ctx.send(f'Changed the bot\'s accent to "{accent_input}".')
         else:
             await ctx.send(f'Invalid accent.')
