@@ -180,11 +180,11 @@ async def accent(ctx, *, accent_input):
 
         if accent_input.lower() == "default":
             ibm_watson_accent = IBM_WATSON_DEFAULT_ACCENT
-            await ctx.send(f'Changed the bot\'s accent to "{accent_input}".')
+            await ctx.send(f'Changed the bot\'s accent to "{IBM_WATSON_DEFAULT_ACCENT}".')
         elif accent_input.lower() in watson_accents_list_copy:
             accent_index = watson_accents_list_copy.index(accent_input.lower())
             ibm_watson_accent = watson_accents_list[accent_index]
-            await ctx.send(f'Changed the bot\'s accent to "{accent_input}".')
+            await ctx.send(f'Changed the bot\'s accent to "{ibm_watson_accent}".')
         else:
             await ctx.send(f'Invalid accent.')
 
