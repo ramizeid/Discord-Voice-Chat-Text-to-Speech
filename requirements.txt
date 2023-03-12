@@ -8,3 +8,4 @@ aiohttp
 ibm_watson
 ibm_cloud_sdk_core
 pyttsx3
+openai

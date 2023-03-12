@@ -1,5 +1,5 @@
 # Discord Voice Chat Text to Speech Bot
-This Discord bot allows users to talk in a voice chat without the use of a microphone. With the use of a Text to Speech service such as IBM Watson, it's possible to convert a Discord user's text messages to speech.
+This Discord bot allows users to talk in a voice chat without the use of a microphone. With the use of a Text to Speech service such as IBM Watson, it's possible to convert a Discord user's text messages to speech. Integrated into the project is OpenAI's chatbot solution that allows users to have realistic conversations via Voice & Text.
 
 -----------
 ## **Installation**
@@ -66,3 +66,11 @@ Now that you've successfully completed the installation process, you're ready to
 ![List of accents command](https://i.gyazo.com/b3000f07d09ef56528db80798e2a782a.png)
 - You can change the bot's accent by running the `.accent ACCENT` (or "`PREFIX`accent ACCENT") command, as shown in the screenshot below. Please note that the command must be taken from the list of accents generated from the `.accents` (or "`PREFIX`accents") command.
 ![Changing the bot's accent](https://i.gyazo.com/49cb89e5fecf5c328a468456a159a1b9.png)
+- You can change the bot's tone to either squeaky or deep by putting your message inside special tags as such: "<squeak>YOUR MESSAGE</squeak>" or "<deep>YOUR MESSAGE</deep>".
+- You can have a realistic conversation with the bot by putting your message inside a special ai tag as such: "<ai>YOUR MESSAGE</ai>". The bot will respond in voice chat & will reply to your message via the used text channel.
+
+**Project demo:**
+[![Quick project demo](https://i.gyazo.com/7c78bf65b67c66a53cb08eb8c4a9884a.gif)](https://gyazo.com/7c78bf65b67c66a53cb08eb8c4a9884a)
+
+This YouTube video showcases a complete project demo with audio recorded by one of our users:
+[![Complete project demo](https://img.youtube.com/vi/4rbgv2K9c-Y/0.jpg)](https://www.youtube.com/watch?v=4rbgv2K9c-Y)
