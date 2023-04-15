@@ -32,16 +32,33 @@ tts = TextToSpeechV1(authenticator=watson_authenticator)
 tts.set_service_url(IBM_WATSON_URL)
 IBM_WATSON_DEFAULT_ACCENT = 'en-US_MichaelV3Voice'
 ibm_watson_accent = IBM_WATSON_DEFAULT_ACCENT
-watson_accents_list = ['ar-MS_OmarVoice', 'zh-CN_LiNaVoice', 'zh-CN_WangWeiVoice', 'zh-CN_ZhangJingVoice',
-                       'cs-CZ_AlenaVoice', 'nl-BE_AdeleVoice', 'nl-BE_BramVoice', 'nl-NL_EmmaVoice', 'nl-NL_LiamVoice',
-                       'en-AU_CraigVoice', 'en-AU_MadisonVoice', 'en-AU_SteveVoice', 'en-GB_CharlotteV3Voice',
-                       'en-GB_JamesV3Voice', 'en-GB_KateV3Voice', 'en-US_AllisonV3Voice', 'en-US_EmilyV3Voice',
-                       'en-US_HenryV3Voice', 'en-US_KevinV3Voice', 'en-US_LisaV3Voice', 'en-US_MichaelV3Voice',
-                       'en-US_OliviaV3Voice', 'fr-CA_LouiseV3Voice', 'fr-FR_NicolasV3Voice', 'fr-FR_ReneeV3Voice',
-                       'de-DE_BirgitV3Voice', 'de-DE_DieterV3Voice', 'de-DE_ErikaV3Voice', 'it-IT_FrancescaV3Voice',
-                       'ja-JP_EmiV3Voice', 'ko-KR_HyunjunVoice', 'ko-KR_SiWooVoice', 'ko-KR_YoungmiVoice',
-                       'ko-KR_YunaVoice', 'pt-BR_IsabelaV3Voice', 'es-ES_EnriqueV3Voice', 'es-ES_LauraV3Voice',
-                       'es-LA_SofiaV3Voice', 'es-US_SofiaV3Voice', 'sv-SE_IngridVoice']
+watson_accents_list = sorted(
+    ['en-AU_HeidiExpressive', 'en-AU_JackExpressive', 'en-GB_CharlotteV3Voice', 'en-GB_JamesV3Voice',
+     'en-GB_KateV3Voice', 'en-US_AllisonExpressive', 'en-US_EmmaExpressive', 'en-US_LisaExpressive',
+     'en-US_MichaelExpressive', 'en-US_AllisonV3Voice', 'en-US_EmilyV3Voice', 'en-US_HenryV3Voice',
+     'en-US_KevinV3Voice', 'en-US_LisaV3Voice', 'en-US_MichaelV3Voice', 'en-US_OliviaV3Voice',
+     'fr-CA_LouiseV3Voice', 'fr-FR_NicolasV3Voice', 'fr-FR_ReneeV3Voice', 'de-DE_BirgitV3Voice',
+     'de-DE_DieterV3Voice', 'de-DE_ErikaV3Voice', 'it-IT_FrancescaV3Voice', 'ja-JP_EmiV3Voice',
+     'ko-KR_JinV3Voice', 'pt-BR_IsabelaV3Voice', 'es-ES_EnriqueV3Voice', 'es-ES_LauraV3Voice',
+     'es-LA_SofiaV3Voice', 'es-US_SofiaV3Voice', 'nl-NL_MerelV3Voice'])
+watson_accents_list_deprecated = sorted(
+    ['ar-MS_OmarVoice', 'zh-CN_LiNaVoice', 'zh-CN_WangWeiVoice', 'zh-CN_ZhangJingVoice',
+     'cs-CZ_AlenaVoice', 'nl-BE_AdeleVoice', 'nl-BE_BramVoice', 'nl-NL_EmmaVoice',
+     'nl-NL_LiamVoice',
+     'en-AU_CraigVoice', 'en-AU_MadisonVoice', 'en-AU_SteveVoice',
+     'en-GB_CharlotteV3Voice',
+     'en-GB_JamesV3Voice', 'en-GB_KateV3Voice', 'en-US_AllisonV3Voice',
+     'en-US_EmilyV3Voice',
+     'en-US_HenryV3Voice', 'en-US_KevinV3Voice', 'en-US_LisaV3Voice',
+     'en-US_MichaelV3Voice',
+     'en-US_OliviaV3Voice', 'fr-CA_LouiseV3Voice', 'fr-FR_NicolasV3Voice',
+     'fr-FR_ReneeV3Voice',
+     'de-DE_BirgitV3Voice', 'de-DE_DieterV3Voice', 'de-DE_ErikaV3Voice',
+     'it-IT_FrancescaV3Voice',
+     'ja-JP_EmiV3Voice', 'ko-KR_HyunjunVoice', 'ko-KR_SiWooVoice', 'ko-KR_YoungmiVoice',
+     'ko-KR_YunaVoice', 'pt-BR_IsabelaV3Voice', 'es-ES_EnriqueV3Voice',
+     'es-ES_LauraV3Voice',
+     'es-LA_SofiaV3Voice', 'es-US_SofiaV3Voice', 'sv-SE_IngridVoice'])
 
 squeaky_voice_keyword = "squeak"
 deep_voice_keyword = "deep"
@@ -61,9 +78,9 @@ OPENAI_SYSTEM_CONFIGURATION_PROMPT = "You are a close friend who also acts as a 
                                      "you something personal, act as if you are a human and make up the information, " \
                                      "just make sure you remember it."
 OPENAI_DEFAULT_MESSAGES = [
-        {"role": "system", "content": OPENAI_SYSTEM_CONFIGURATION_PROMPT},
-        {"role": "user", "content": "Hey man!"},
-        {"role": "assistant", "content": "Yo, what's up bro?"}
+    {"role": "system", "content": OPENAI_SYSTEM_CONFIGURATION_PROMPT},
+    {"role": "user", "content": "Hey man!"},
+    {"role": "assistant", "content": "Yo, what's up bro?"}
 ]
 OPENAI_MESSAGE_HISTORY_LIMIT = 20
 openai_messages = OPENAI_DEFAULT_MESSAGES.copy()
